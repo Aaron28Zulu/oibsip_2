@@ -15,6 +15,7 @@ universal_font_combobox = ('Arial', 18,)
 
 root = tk.Tk()
 root.title("BMI Calculator")
+root.iconbitmap("bmi_img/appIcon.ico")
 root.geometry("400x600")
 root.resizable(False, False)
 
@@ -85,7 +86,7 @@ catigory_label.config(anchor='center')
 catigory_label.place(relx=.19, rely=.419)
 
 image = Image.open('bmi_img/BMI_chart.png')
-image = image.resize((370, 300))
+image = image.resize((370, 290))
 img = ImageTk.PhotoImage(image)
 
 img_label = ttk.Label(root, image=img, padding='0.35c', border=1)
