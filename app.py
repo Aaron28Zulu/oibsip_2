@@ -3,6 +3,8 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 
+from PIL import Image, ImageTk
+
 
 
 # Global variables
@@ -19,17 +21,25 @@ root.resizable(False, False)
 root.configure(bg="#f0f1f5")
 
 def calculate_bmi():
-    """
-    Height value & Weight value and Calculate
-    """
     try:
         weight = float(Weight.get())
         height = float(Height.get())
         
         bmi = weight / (height**2)
 
-        # print(f"{height} and {weight} type: {type(height)} and {type(weight)} respectively")
+
+        # print(f"{height} and {weight} type: {type(height)} and {type(weight)} respectively") 
         result_label.configure(text="Your BMI is: {:.1f}".format(bmi))
+        if bmi < 18.5:
+            catigory_label.configure(text="You're Underweight", background="#fff", foreground="blue")
+        elif 18.5 < bmi < 25:
+            catigory_label.configure(text="You're Normal weight", background="#fff", foreground="green")
+        elif 25 < bmi < 30:
+            catigory_label.configure(text="You're Overweight", background="#fff", foreground="yellow")
+        elif 30 < bmi < 40:
+            catigory_label.configure(text="You're Obese", background="#fff", foreground="orange")
+        else:
+            catigory_label.configure(text="You're Extremely Obese", background="#fff", foreground="red")
 
     except ValueError:
         messagebox.showerror('error', 'Enter a valid number')
@@ -69,5 +79,16 @@ btn_calculate.place(relx=0.33, rely=0.28)
 result_label = ttk.Label(root, text=' ', font=universal_font_other, width=25, background="#fff", foreground="#000")
 result_label.config(anchor='center')
 result_label.place(relx=.19, rely=.38)
+
+catigory_label = ttk.Label(root, text=' ', font=universal_font_other, width=25)
+catigory_label.config(anchor='center')
+catigory_label.place(relx=.19, rely=.419)
+
+image = Image.open('bmi_img/BMI_chart.png')
+image = image.resize((370, 300))
+img = ImageTk.PhotoImage(image)
+
+img_label = ttk.Label(root, image=img, padding='0.35c', border=1)
+img_label.place(relx=0, rely=.454)
 
 root.mainloop()
