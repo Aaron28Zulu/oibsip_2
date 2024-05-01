@@ -1,42 +1,73 @@
 from tkinter import *
 import tkinter as tk
 from tkinter import ttk
+from tkinter import messagebox
+
+
+
+# Global variables
+universal_font_header = ('Arial', 30,)
+universal_font_other = ('Arial', 12)
+universal_font_combobox = ('Arial', 18,)
 
 
 root = tk.Tk()
 root.title("BMI Calculator")
-root.geometry("400x500+300+200")
+root.geometry("400x600")
 root.resizable(False, False)
 
 root.configure(bg="#f0f1f5")
 
-
 def calculate_bmi():
-    h = int(Height.get())
-    w = int(Weight.get())
-    print(f"{type(h)} x {type(w)}")
+    """
+    Height value & Weight value and Calculate
+    """
+    try:
+        weight = float(Weight.get())
+        height = float(Height.get())
+        
+        bmi = weight / (height**2)
+
+        # print(f"{height} and {weight} type: {type(height)} and {type(weight)} respectively")
+        result_label.configure(text="Your BMI is: {:.1f}".format(bmi))
+
+    except ValueError:
+        messagebox.showerror('error', 'Enter a valid number')
+
+    except ZeroDivisionError:
+        messagebox.showerror('error', 'Can not divide with 0!')
 
 
-#Bottom
-Label(root, width=70, height=18, bg="#434544").pack(side="bottom")
+style = ttk.Style()
+style.configure('BMI.TLabel', font=universal_font_header)
+title = ttk.Label(root, text="Calculate BMI", style='BMI.TLabel')
+title.place(relx=0.17, rely=0.02)
 
 
 # Entry Box
-Height = IntVar()
-Weight = IntVar()
+Height = StringVar()
+Weight = StringVar()
 
-Label(root, text="Height: (m)", font='arial 18').place(x=30, y=90)
-Height = Entry(root, textvariable=Height, width=6, font='arial 30', bg="#c2c2c2", fg="#000", bd=0, justify=CENTER)
-Height.place(x=30, y=120)
-Height.focus()
 
-Label(root, text="Weight: (kg)", font='arial 18').place(x=230, y=90)
-Weight = Entry(root, textvariable=Weight, width=6, font='arial 30', bg="#c2c2c2", fg="#000", bd=0, justify=CENTER)
-Weight.place(x=230, y=120)
-Weight.focus()
+ttk.Label(root, text="Enter Height in m: ").place(relx=0.19, rely=0.13)
+height_entry = ttk.Entry(root, width=10, textvariable=Height, justify=CENTER, font=universal_font_other)
+height_entry.focus()
+height_entry.place(relx=0.54, rely=0.13)
+
+
+ttk.Label(root, text="Enter weight in kg: ").place(relx=0.19, rely=0.19)
+weight_entry = ttk.Entry(root, width=10, textvariable=Weight, justify=CENTER, font=universal_font_other)
+weight_entry.focus()
+weight_entry.place(relx=0.54, rely=0.19)
+
 
 s = ttk.Style()
-s.configure('my.TButton', font=('Arial', 18))
-btn_calculate = ttk.Button(root, text="Calculate", style='my.TButton', command=calculate_bmi).place(x=120, y=180)
+s.configure('my.TButton', font=('Arial', 12), background='#fff')
+btn_calculate = ttk.Button(root, text="Calculate", style='my.TButton', command=calculate_bmi, cursor='hand2')
+btn_calculate.place(relx=0.33, rely=0.28)
+
+result_label = ttk.Label(root, text=' ', font=universal_font_other, width=25, background="#fff", foreground="#000")
+result_label.config(anchor='center')
+result_label.place(relx=.19, rely=.38)
 
 root.mainloop()
